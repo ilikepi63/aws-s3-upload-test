@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <input type="text" id="upload-url" placeholder="Upload URL"></input>
+    <input type="file" id="fileInput" />
+    <button id="submit">Submit</button>
+
+
+    <script>
+
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const submitButton = document.getElementById("submit");
+            const urlInput = document.getElementById("upload-url");
+            const fileInput = document.getElementById("fileInput");
+
+            submitButton.addEventListener("click", () => {
+                const url = urlInput.value;
+                const file = fileInput.files[0];
+
+                const fileNameParts = file.name.split('.');
+
+                // extension is the last index of this
+                const extension = fileNameParts[fileNameParts.length - 1];
+
+                console.log("Uploading: ", file.type);
+
+                fetch(url, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': file.type
+                    },
+                    body: file
+                })
+                .then(res => res.text())
+                .then(console.log)
+                .catch(err => {
+                    console.log("This is the error");
+                    console.log(err);
+                });
+
+
+            })
+
+        });
+    </script>
+</body>
+
+</html>
